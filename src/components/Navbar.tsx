@@ -7,10 +7,10 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import { useRouter } from "next/router";
 import { items } from "@/utils/navItems";
+import Link from "next/link";
 
 function ResponsiveAppBar() {
   const [Navbar, setNavbar] = React.useState<null | HTMLElement>(null);
@@ -27,7 +27,16 @@ function ResponsiveAppBar() {
   console.log(router.route);
 
   return (
-    <AppBar position="sticky" sx={{ bgcolor: "transparent" }}>
+    <AppBar
+      position="sticky"
+      sx={{
+        background: "transparent",
+        // background:
+        //   "linear-gradient(180.2deg, rgb(30, 33, 48) 6.8%, rgb(74, 98, 110) 131%)",
+        // opacity: "0.6",
+      }}
+      elevation={0}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -38,12 +47,13 @@ function ResponsiveAppBar() {
             sx={{
               display: { xs: "none", md: "flex" },
               fontFamily: "monospace",
-              fontWeight: 700,
+              fontWeight: "bolder",
               letterSpacing: ".3rem",
               textDecoration: "none",
+              color: "black",
             }}
           >
-            FA
+            FAM_
           </Typography>
 
           <Typography
@@ -58,9 +68,10 @@ function ResponsiveAppBar() {
               fontWeight: 700,
               letterSpacing: ".3rem",
               textDecoration: "none",
+              color: "black",
             }}
           >
-            FA
+            FAM_
           </Typography>
           <Box
             sx={{
@@ -69,14 +80,21 @@ function ResponsiveAppBar() {
               justifyContent: "center",
             }}
           >
-            {items.map((page) => (
-              <Button
-                key={page}
+            {items.map((item) => (
+              <Link
+                key={item.id}
+                href={item.to}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "black", display: "block" }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  textDecoration: "none",
+                  color: "black",
+                }}
               >
-                {page}
-              </Button>
+                {/* {item.icon} */}
+                <Typography px={1}>{item.title}</Typography>
+              </Link>
             ))}
           </Box>
 
@@ -88,7 +106,11 @@ function ResponsiveAppBar() {
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
             >
-              <MenuIcon />
+              <MenuIcon
+                sx={{
+                  color: "black",
+                }}
+              />
             </IconButton>
             <Menu
               id="menu-appbar"
@@ -108,9 +130,19 @@ function ResponsiveAppBar() {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {items.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+              {items.map((item) => (
+                <MenuItem
+                  key={item.id}
+                  href={item.to}
+                  onClick={handleCloseNavMenu}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    textDecoration: "none",
+                  }}
+                >
+                  {/* {item.icon} */}
+                  <Typography px={1}> {item.title}</Typography>
                 </MenuItem>
               ))}
             </Menu>

@@ -3,7 +3,15 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import BookOutlinedIcon from "@mui/icons-material/BookOutlined";
 import ContactMailOutlinedIcon from "@mui/icons-material/ContactMailOutlined";
 import LocalOfferOutlinedIcon from "@mui/icons-material/LocalOfferOutlined";
-export const items = [
+
+interface NavItems {
+  id: number;
+  title: string;
+  to: string;
+  icon: JSX.Element;
+}
+
+export const items: NavItems[] = [
   {
     id: 1,
     title: "Home",
