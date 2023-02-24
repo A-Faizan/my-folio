@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -8,29 +8,30 @@ import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import MenuItem from "@mui/material/MenuItem";
-import { useRouter } from "next/router";
+import { Link } from "react-scroll";
 import { items } from "@/utils/navItems";
-import Link from "next/link";
+import { Button } from "@mui/material";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
+import { ColorModeContext } from "@/pages/_app";
 
-function ResponsiveAppBar() {
-  const [Navbar, setNavbar] = React.useState<null | HTMLElement>(null);
+function ResponsiveAppBar({ theme }: object) {
+  const [Navbar, setNavbar] = useState<null | HTMLElement>(null);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setNavbar(event.currentTarget);
   };
-
+  const colorMode = React.useContext(ColorModeContext);
+  console.log("theme", theme.palette.common);
   const handleCloseNavMenu = () => {
     setNavbar(null);
   };
-
-  const router = useRouter();
-  console.log(router.route);
 
   return (
     <AppBar
       position="sticky"
       sx={{
-        background: "transparent",
+        background: "background.default",
         // background:
         //   "linear-gradient(180.2deg, rgb(30, 33, 48) 6.8%, rgb(74, 98, 110) 131%)",
         // opacity: "0.6",
@@ -82,22 +83,36 @@ function ResponsiveAppBar() {
           >
             {items.map((item) => (
               <Link
+                to={item.to}
+                spy={true}
+                smooth={true}
+                offset={-70}
+                duration={500}
                 key={item.id}
-                href={item.to}
-                onClick={handleCloseNavMenu}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  textDecoration: "none",
-                  color: "black",
-                }}
+                // onClick={handleScroll}
               >
-                {/* {item.icon} */}
-                <Typography px={1}>{item.title}</Typography>
+                <Button
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    textDecoration: "none",
+                    color: "",
+                  }}
+                >
+                  <Typography px={1}>{item.title}</Typography>
+                </Button>
               </Link>
             ))}
           </Box>
-
+          <Box sx={{ flexGrow: 0, display: "flex" }}>
+            <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode}>
+              {theme.palette.mode === "dark" ? (
+                <Brightness7Icon />
+              ) : (
+                <Brightness4Icon />
+              )}
+            </IconButton>
+          </Box>
           <Box sx={{ flexGrow: 0, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -133,7 +148,7 @@ function ResponsiveAppBar() {
               {items.map((item) => (
                 <MenuItem
                   key={item.id}
-                  href={item.to}
+                  // href={""}
                   onClick={handleCloseNavMenu}
                   style={{
                     display: "flex",
@@ -141,7 +156,6 @@ function ResponsiveAppBar() {
                     textDecoration: "none",
                   }}
                 >
-                  {/* {item.icon} */}
                   <Typography px={1}> {item.title}</Typography>
                 </MenuItem>
               ))}

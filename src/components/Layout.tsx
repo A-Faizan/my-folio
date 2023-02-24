@@ -1,13 +1,16 @@
-import React, { ReactNode, useState } from "react";
+import React, { useState } from "react";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
 import styled from "styled-components";
 import { Typewriter } from "react-simple-typewriter";
-import { Box, Grid, Modal, Typography } from "@mui/material";
+import { Box, Grid, Modal, Typography, useTheme } from "@mui/material";
 import Ripple from "./animations/Ripple";
-interface LayoutProps {
-  children: ReactNode;
-}
+import About from "./about/About";
+import Portfolio from "./portfolio/Portfolio";
+import Resume from "./resume/Resume";
+import Contact from "./contact/Contact";
+const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
+
 interface DivProps {
   transform: string;
 }
@@ -33,14 +36,17 @@ const BGDiv = styled.div`
   height: 800px;
 `;
 
-const Layout = ({ children }: LayoutProps) => {
+const Layout = () => {
   const [modal, setModal] = useState(false);
+  const colorMode = React.useContext(ColorModeContext);
+  console.log("colorMode", colorMode);
 
   // const handleType = (count: number) => {
   //   // access word count number
   //   console.log(count)}
   // }
 
+  const theme = useTheme();
   const handleDone = () => {
     console.log(`Done after 5 loops!`);
   };
@@ -74,7 +80,7 @@ const Layout = ({ children }: LayoutProps) => {
       </Modal>
       <div style={{ overflowX: "hidden" }}>
         <BGDiv>
-          <Navbar />
+          <Navbar theme={theme} />
           <Grid container height="600px">
             <Grid
               item
@@ -131,35 +137,18 @@ const Layout = ({ children }: LayoutProps) => {
             </Grid>
           </Grid>
         </BGDiv>
-        {children}
-        <Grid
-          container
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-          height="800px"
-        >
-          <Grid xs={8} item>
-            <Typography variant="h5" color="black">
-              Hi there! I'm a front-end React developer with six months of
-              experience. I have a passion for creating beautiful and engaging
-              user experiences on the web. I love staying up-to-date with the
-              latest technologies and trends, and I'm always looking for new
-              ways to push the boundaries of what's possible online. My
-              expertise lies in React.js and the surrounding ecosystem,
-              including Redux, React Router, and other popular libraries. I have
-              experience building responsive and scalable web applications using
-              modern front-end development tools. I'm passionate about learning
-              and growing as a developer, and I believe that staying curious is
-              the key to success in this field. I'm excited to continue honing
-              my skills as a frontend developer, and I'm always open to new
-              opportunities to collaborate on exciting projects. If you're
-              interested in working together or just want to chat about web
-              development, feel free to get in touch!
-            </Typography>
-          </Grid>
-        </Grid>
+        <div id="about">
+          <About />
+        </div>
+        <div id="portfolio">
+          <Portfolio />
+        </div>
+        <div id="resume">
+          <Resume />
+        </div>
+        <div id="contact">
+          <Contact />
+        </div>
         <Footer />
       </div>
     </>
